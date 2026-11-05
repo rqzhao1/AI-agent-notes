@@ -1544,3 +1544,21 @@ n-Policy Self-Distillation（OPSD，在轨自蒸馏）15：同一个模型分饰
    2. **乐观锁**是 "先干、最后对账"，冲突率越高、单次写入越重，重试代价越大，极端情况下还会活锁（双方反复互相顶掉重试）
 3. 三、外部挂载资源（Mounted External Resources）。用户授权接入的第三方信息源——Google Drive、Notion、Dropbox、企业 Wiki 等——通过适配器（adapter）映射为文件系统中的挂载点（如 /mnt/gdrive
 4. 四、系统内置资源（Built-in System Resources）。系统预置、对所有 Agent 只读共享的资源包，典型代表是第二章、第四章介绍的 Skills
+
+### Agent 间的通信与控制
+
+#### 消息传递
+
+1. Agent A 直接调用 **send_message_to_agent_b(content)**，适用于拓扑固定、Agent 数量少的场景（如本章实验 10-3 的电话 + 电脑双 Agent）.
+2. 当 Agent 数量增多且需异步并行时,采用消息总线。
+
+无论点对点还是经总线，消息通常应携带结构化的信封（envelope）：发送者 ID、目标（指定 Agent 或广播）、消息类型（如 task_assigned/status_update/result/terminate）及 JSON 负载
+
+#### 状态查询
+
+1. 用消息传递获取状态
+2. 用共享文件系统获取状态
+
+**约定进度文件**：主 Agent 启动子 Agent 时约定“把进度写到 progress.md”，子 Agent 每完成一项就更新这份任务清单，主 Agent 随时读这个轻量文件即可掌握进展。进度文件还可以用于检测卡住状态：progress.md（或轨迹文件）的最后修改时间超过 N 分钟没有变化，即可判定子 Agent 无活动、触发超时兜底，避免系统被阻塞的子 Agent 拖累
+
+#### 执行终止
