@@ -704,3 +704,7 @@ Qwen3.6 的 A3B 名称体现激活规模。A3B 是 MoE 模型的双参数量命�
 多 token 预测（Multi-Token Prediction，MTP）在此基础上增加后续多个 token 的预测目标或辅助预测模块。训练时，这些额外目标促使当前表示包含对更远后续内容有用的信息；推理时，辅助模块可以先提出多个候选 token，再由主模型验证，以减少生成同样数量 token 所需的串行轮数。
 
 ## 2.6 整个模型的资源需求与比较
+
+<sheet sheet-id="liyduQ" token="Bhl7sVjHfh582ztTSVPcgJzdncb"></sheet>
+
+<sheet sheet-id="vXs2tN" token="Bhl7sVjHfh582ztTSVPcgJzdncb"></sheet>
